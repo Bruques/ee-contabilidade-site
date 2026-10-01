@@ -12,7 +12,7 @@
   --grafite: #222823;
   --branco: #fff;
 
-  --serif: "DM Serif Display", "Cormorant Garamond", Georgia, serif;
+  --serif: "Baskervville", "Baskerville Old Face", Baskerville, Georgia, serif;
   --sans: "Manrope", "Inter", system-ui, -apple-system, sans-serif;
 
   --header-h: 76px;
@@ -331,6 +331,15 @@ ul { margin: 0; padding: 0; list-style: none; }
 .reveal { opacity: 0; transform: translateY(24px); transition: opacity .8s ease, transform .8s ease; }
 .reveal.in { opacity: 1; transform: none; }
 .no-js .reveal { opacity: 1; transform: none; }
+/* Equipe (galeria com fotos reais) */
+.equipe { background: var(--offwhite); }
+.equipe-head { margin-bottom: 36px; }
+.galeria { display: grid; grid-template-columns: 1.7fr 1fr; grid-template-rows: 1fr 1fr; gap: 16px; height: clamp(380px, 46vw, 560px); }
+.galeria figure { margin: 0; border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); background: var(--cinza-quente); }
+.galeria img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.galeria .g-main { grid-row: 1 / span 2; }
+.galeria .g-b img { object-position: center 28%; }
+
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   .reveal { opacity: 1; transform: none; transition: none; }
@@ -361,6 +370,9 @@ ul { margin: 0; padding: 0; list-style: none; }
 
 /* ---------- Mobile ---------- */
 @media (max-width: 720px) {
+  .galeria { grid-template-columns: 1fr; grid-template-rows: none; height: auto; }
+  .galeria .g-main { grid-row: auto; }
+  .galeria figure { aspect-ratio: 4 / 3; }
   :root { --header-h: 68px; }
   .container { width: min(var(--container), 100% - 36px); }
   .header-cta { display: none; }
