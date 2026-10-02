@@ -56,20 +56,21 @@ WA = '<svg class="icon icon-fill" aria-hidden="true"><use href="#i-wa"/></svg>'
 
 
 # ---------------------------------------------------------------- partes comuns
-def logo(claro=False, root=""):
-    home = f"{root}index.html" if root else "#inicio"
-    return (f'<a class="logo{" logo-claro" if claro else ""}" href="{home}" aria-label="{NOME} — início">'
+def logo(claro=False, root="", home=False):
+    destino = "#inicio" if home else f"{root}index.html"
+    return (f'<a class="logo{" logo-claro" if claro else ""}" href="{destino}" aria-label="{NOME} — início">'
             f'<img src="{root}imagens/web/logo.png" alt="{NOME}" width="640" height="457"></a>')
 
 
-def header(root=""):
-    h = f"{root}index.html" if root else ""
-    itens = [("Início", "#inicio"), ("Sobre", "#sobre"), ("Serviços", "#servicos"), ("Reforma Tributária", "#reforma"),
-             ("Aplicativo", "#aplicativo"), ("Conteúdos", "#conteudos"), ("Contato", "#contato")]
-    lis = "".join(f'<li><a href="{h}{a}">{n}</a></li>' for n, a in itens)
+def header(root="", home=False):
+    h = "" if home else f"{root}index.html"
+    itens = [("Início", f"{h}#inicio"), ("Serviços", f"{h}#servicos"), ("Reforma Tributária", f"{h}#reforma"),
+             ("Aplicativo", f"{h}#aplicativo"), ("Sobre", f"{h}#sobre"), ("Conteúdos", f"{root}conteudos/index.html"),
+             ("Contato", f"{h}#contato")]
+    lis = "".join(f'<li><a href="{href}">{n}</a></li>' for n, href in itens)
     return f'''<header class="site-header">
   <div class="container header-inner">
-    {logo(root=root)}
+    {logo(root=root, home=home)}
     <nav class="main-nav" id="menu" aria-label="Principal"><ul>{lis}</ul></nav>
     <a class="btn btn-verde header-cta" data-wa href="{h}#contato">{WA} Falar com uma especialista {ic("arrow")}</a>
     <button class="nav-toggle" aria-expanded="false" aria-controls="menu" aria-label="Abrir menu">{ic("menu")}</button>
@@ -77,18 +78,18 @@ def header(root=""):
 </header>'''
 
 
-def footer(root=""):
-    h = f"{root}index.html" if root else ""
+def footer(root="", home=False):
+    h = "" if home else f"{root}index.html"
     return f'''<footer class="site-footer">
   <div class="container">
     <div class="footer-grid">
-      <div class="footer-brand">{logo(True, root)}<p>Contabilidade, tributação e tecnologia para quem movimenta o campo.</p></div>
+      <div class="footer-brand">{logo(True, root, home)}<p>Você cuida da produção.<br>A E&amp;E ajuda a cuidar do resto.</p></div>
       <div><h4>E&amp;E</h4><ul><li><a href="{h}#sobre">Sobre</a></li><li><a href="{h}#contato">Contato</a></li></ul></div>
       <div><h4>Serviços</h4><ul>
-        <li><a href="{h}#servicos">Produtor Rural</a></li><li><a href="{h}#servicos">Nota Fiscal</a></li>
-        <li><a href="{h}#servicos">Gestão Tributária</a></li><li><a href="{h}#servicos">Imposto de Renda</a></li>
-        <li><a href="{h}#servicos">Holding Rural</a></li></ul></div>
-      <div><h4>Informação</h4><ul><li><a href="{h}#reforma">Reforma Tributária</a></li><li><a href="{h}#conteudos">Conteúdos</a></li><li><a href="{h}#aplicativo">Aplicativo</a></li></ul></div>
+        <li><a href="{h}#servicos">Assessoria ao Produtor</a></li><li><a href="{root}conteudos/nota-fiscal-produtor-rural.html">Nota Fiscal Rural</a></li>
+        <li><a href="{root}conteudos/planejamento-tributario-agronegocio.html">Gestão Tributária</a></li><li><a href="{root}conteudos/imposto-de-renda-produtor-rural.html">Imposto de Renda</a></li>
+        <li><a href="{root}conteudos/holding-rural-quando-faz-sentido.html">Holding Rural</a></li></ul></div>
+      <div><h4>Informação</h4><ul><li><a href="{h}#reforma">Reforma Tributária</a></li><li><a href="{root}conteudos/index.html">Conteúdos</a></li><li><a href="{h}#aplicativo">Aplicativo</a></li></ul></div>
       <div><h4>Contato</h4><ul>
         <li>Bom Repouso - MG</li>
         <li><span class="todo" data-contact="whatsapp">[TODO WhatsApp]</span></li>
@@ -104,7 +105,7 @@ def footer(root=""):
 <a class="wa-float" data-wa href="{h}#contato" aria-label="Falar pelo WhatsApp">{WA}</a>'''
 
 
-def pagina(titulo, descricao, corpo, root="", extra_head="", classe=""):
+def pagina(titulo, descricao, corpo, root="", extra_head="", classe="", home=False):
     return f'''<!doctype html>
 <html lang="pt-BR" class="no-js">
 <head>
@@ -127,11 +128,11 @@ def pagina(titulo, descricao, corpo, root="", extra_head="", classe=""):
 <body{f' class="{classe}"' if classe else ""}>
 <a class="skip-link" href="#conteudo-principal">Ir para o conteúdo</a>
 {SPRITE}
-{header(root)}
+{header(root, home)}
 <main id="conteudo-principal">
 {corpo}
 </main>
-{footer(root)}
+{footer(root, home)}
 <script src="{root}assets/js/site.js"></script>
 <script>document.getElementById("ano").textContent = new Date().getFullYear();</script>
 </body>
@@ -267,9 +268,15 @@ ARTIGOS = [
 POR_SLUG = {a["slug"]: a for a in ARTIGOS}
 
 
+ICONE_ARTIGO = {"reforma-tributaria-produtor-rural": "compass", "cbs-ibs-agronegocio": "percent",
+                "nota-fiscal-produtor-rural": "filecheck", "imposto-de-renda-produtor-rural": "user",
+                "holding-rural-quando-faz-sentido": "home", "planejamento-tributario-agronegocio": "chart"}
+
+
 def card_artigo(a, root):
+    k = ARTIGOS.index(a) % 6 + 1
     return f'''<a class="card-art reveal" href="{root}conteudos/{a["slug"]}.html">
-  <figure><img src="{root}imagens/web/{a["img"]}" alt="" loading="lazy" width="900" height="560"></figure>
+  <figure class="painel tema-{k}" aria-hidden="true"><span class="painel-ico">{ic(ICONE_ARTIGO[a["slug"]])}</span></figure>
   <div class="body"><span class="cat">{a["cat"]}</span><h3>{a["titulo"]}</h3><span class="ler">Ler artigo {ic("arrow")}</span></div>
 </a>'''
 
@@ -290,7 +297,7 @@ def gerar_artigo(a):
     body = f'''<section class="page-hero">
   <img src="{root}imagens/web/{a["img"]}" alt="" width="1200" height="600">
   <div class="container">
-    <nav class="breadcrumb" aria-label="Você está em"><a href="{root}index.html">Início</a> / <a href="{root}index.html#conteudos">Conteúdos</a> / {a["cat"]}</nav>
+    <nav class="breadcrumb" aria-label="Você está em"><a href="{root}index.html">Início</a> / <a href="{root}conteudos/index.html">Conteúdos</a> / {a["cat"]}</nav>
     <span class="eyebrow dourado">{a["cat"]}</span>
     <h1>{a["titulo"]}</h1>
     <p class="lead">{a["lead"]}</p>
@@ -318,6 +325,28 @@ def gerar_artigo(a):
         pagina(f'{a["seo"]} | {NOME}', a["desc"], body, root, ld), encoding="utf-8")
 
 
+def gerar_hub():
+    root = "../"
+    cards = "".join(card_artigo(a, root) for a in ARTIGOS)
+    body = f"""<section class="page-hero">
+  <img src="{root}imagens/web/reforma-bg.jpg" alt="" width="1200" height="600">
+  <div class="container">
+    <nav class="breadcrumb" aria-label="Você está em"><a href="{root}index.html">Início</a> / Conteúdos</nav>
+    <span class="eyebrow dourado">ARTIGOS E GUIAS</span>
+    <h1>Informação para o produtor rural</h1>
+    <p class="lead">Guias simples e diretos sobre Reforma Tributária, nota fiscal, imposto de renda e planejamento para a propriedade.</p>
+  </div>
+</section>
+<section class="section conteudos">
+  <div class="container"><div class="grid-artigos">{cards}</div></div>
+</section>"""
+    (RAIZ / "conteudos").mkdir(exist_ok=True)
+    (RAIZ / "conteudos" / "index.html").write_text(pagina(
+        f"Conteúdos para o produtor rural | {NOME}",
+        "Artigos e guias da E&E Contabilidade sobre Reforma Tributária, nota fiscal rural, imposto de renda, holding rural e planejamento tributário.",
+        body, root), encoding="utf-8")
+
+
 # ---------------------------------------------------------------- páginas legais
 def gerar_legal(arq, titulo, desc, secoes):
     corpo_txt = "".join(f"<h2>{t}</h2>{p}" for t, p in secoes)
@@ -332,12 +361,12 @@ def gerar_legal(arq, titulo, desc, secoes):
 
 # ---------------------------------------------------------------- home
 SERVICOS = [
-    ("Assessoria ao Produtor Rural", "Apoio contábil, fiscal e tributário para a rotina da propriedade.", "svc-assessoria.jpg", "sprout", "Fotografia de produtor rural colhendo morangos ao pôr do sol"),
-    ("Nota Fiscal Rural", "Orientação e tecnologia para simplificar a emissão de documentos fiscais.", "svc-nota-fiscal.jpg", "file", "Produtor rural usando o celular em plantação de morango"),
-    ("Gestão Tributária", "Planejamento e acompanhamento tributário para o agronegócio.", "svc-gestao.jpg", "chart", "Estufas agrícolas e plantação em vale do Sul de Minas"),
-    ("Imposto de Renda", "Atendimento às particularidades fiscais do produtor rural.", "svc-ir.jpg", "user", "Morangos maduros e flores na lavoura"),
-    ("Holding Rural", "Planejamento patrimonial e sucessório.", "svc-holding.jpg", "home", "Propriedade rural com montanhas ao fundo durante o pôr do sol"),
-    ("Certificado Digital", "Praticidade e segurança para suas obrigações digitais.", "svc-certificado.jpg", "lock", "Produtor com celular em mãos na lavoura"),
+    ("Assessoria ao Produtor Rural", "Apoio contábil, fiscal e tributário para a rotina da propriedade.", "svc-assessoria.jpg", "sprout", "Fotografia de produtor rural colhendo morangos ao pôr do sol", "#contato", "Falar com a E&E"),
+    ("Nota Fiscal Rural", "Orientação e tecnologia para simplificar a emissão de documentos fiscais.", "svc-nota-fiscal.jpg", "file", "Produtor rural usando o celular em plantação de morango", "conteudos/nota-fiscal-produtor-rural.html", "Ler o guia"),
+    ("Gestão Tributária", "Planejamento e acompanhamento tributário para o agronegócio.", "svc-gestao.jpg", "chart", "Estufas agrícolas e plantação em vale do Sul de Minas", "conteudos/planejamento-tributario-agronegocio.html", "Ler o guia"),
+    ("Imposto de Renda", "Atendimento às particularidades fiscais do produtor rural.", "svc-ir.jpg", "user", "Morangos maduros e flores na lavoura", "conteudos/imposto-de-renda-produtor-rural.html", "Ler o guia"),
+    ("Holding Rural", "Planejamento patrimonial e sucessório.", "svc-holding.jpg", "home", "Propriedade rural com montanhas ao fundo durante o pôr do sol", "conteudos/holding-rural-quando-faz-sentido.html", "Ler o guia"),
+    ("Certificado Digital", "Praticidade e segurança para suas obrigações digitais.", "svc-certificado.jpg", "lock", "Produtor com celular em mãos na lavoura", "#contato", "Falar com a E&E"),
 ]
 DIFS = [("users", "Atendimento especializado no agro"), ("shield", "Segurança e conformidade fiscal"),
         ("sprout", "Experiência com produtores rurais"), ("heart", "Relacionamento próximo"),
@@ -356,13 +385,11 @@ ASSUNTOS = ["Assessoria ao Produtor Rural", "Nota Fiscal Rural", "Reforma Tribut
 
 def gerar_home():
     dif = "".join(f'<li class="dif-item">{ic(i)}<span>{t}</span></li>' for i, t in DIFS)
-    svc = "".join(f'''<article class="card-svc reveal"><figure><img src="imagens/web/{img}" alt="{alt}" loading="lazy" width="900" height="506"></figure>
-  <div class="body"><span class="ico">{ic(i)}</span><h3>{t}</h3><p>{d}</p><a class="link-seta" href="#contato">Saiba mais {ic("arrow")}</a></div></article>'''
-                  for t, d, img, i, alt in SERVICOS)
+    svc = "".join(f'''<article class="card-svc reveal"><figure class="painel tema-{k}" aria-hidden="true"><span class="painel-ico">{ic(i)}</span></figure>
+  <div class="body"><h3>{t}</h3><p>{d}</p><a class="link-seta" href="{href}">{rotulo} {ic("arrow")}</a></div></article>'''
+                  for k, (t, d, img, i, alt, href, rotulo) in enumerate(SERVICOS, 1))
     ref = "".join(f'<div class="card-ref reveal">{ic(i)}<div><h3>{t}</h3><p>{d}</p></div></div>' for i, t, d in REFORMA)
     ben = "".join(f'<li class="benef">{ic(i)}<span>{t}</span></li>' for i, t in BENEF)
-    pil = "".join(f'<div class="pilar">{ic(i)}<div><strong>{t}</strong><span>{d}</span></div></div>' for i, t, d in PILARES)
-    art = "".join(card_artigo(a, "") for a in ARTIGOS)
     opts = "".join(f"<option>{a}</option>" for a in ASSUNTOS)
     ld = f'''<script type="application/ld+json">{{"@context":"https://schema.org","@type":"AccountingService","name":"{NOME}","description":"Contabilidade para produtor rural e agronegócio em Bom Repouso - MG.","address":{{"@type":"PostalAddress","addressLocality":"Bom Repouso","addressRegion":"MG","addressCountry":"BR"}},"areaServed":["Bom Repouso","Sul de Minas"],"knowsAbout":["Contabilidade rural","Reforma Tributária","Nota fiscal do produtor rural","Imposto de Renda do produtor rural","Holding rural"]}}</script>'''
     body = f'''<!-- HERO -->
@@ -371,7 +398,7 @@ def gerar_home():
   <img class="hero-img" src="imagens/web/hero.jpg" alt="Produtor rural observando plantação de morango em estufas, com montanhas do Sul de Minas ao pôr do sol" width="1774" height="887" fetchpriority="high">
   <div class="container">
     <div class="hero-content">
-      <span class="selo">ESPECIALISTAS EM PRODUTOR RURAL • BOM REPOUSO E REGIÃO</span>
+      <span class="selo">ESPECIALISTAS NO AGRONEGÓCIO • BOM REPOUSO E REGIÃO</span>
       <h1>Contabilidade<br>que entende<br><span class="dourado">o campo.</span></h1>
       <p class="sub">Gestão tributária, tecnologia e assessoria especializada para o produtor rural.</p>
       <p class="compl">Da emissão de notas fiscais à Reforma Tributária, ajudamos você a cuidar das obrigações da propriedade com mais segurança e tranquilidade.</p>
@@ -381,7 +408,7 @@ def gerar_home():
       </div>
     </div>
   </div>
-  <aside class="hero-card">{ic("pin")}<div><strong>Bom Repouso - MG</strong><span>Ao lado de quem produz e movimenta o nosso agro.</span></div></aside>
+  <aside class="hero-card">{ic("pin")}<div><strong>Bom Repouso e Bueno Brandão - MG</strong><span>Dois escritórios para atender produtores de toda a região.</span></div></aside>
 </section>
 
 <!-- DIFERENCIAIS -->
@@ -408,6 +435,7 @@ def gerar_home():
       <h2>O agro está mudando.<br>Sua propriedade está preparada?</h2>
       <p>A Reforma Tributária traz novas regras e impactos para o produtor rural. Conte com acompanhamento especializado para entender as mudanças e se preparar com antecedência.</p>
       <a class="btn btn-dourado" href="conteudos/reforma-tributaria-produtor-rural.html">Entender a Reforma Tributária {ic("arrow")}</a>
+      <p class="reforma-mais">Quer ir mais fundo? <a href="conteudos/cbs-ibs-agronegocio.html">Veja como CBS e IBS podem impactar o agronegócio</a>.</p>
     </div>
     <div class="reforma-cards">{ref}</div>
   </div>
@@ -425,9 +453,7 @@ def gerar_home():
     <div class="phone-wrap reveal">
       <div class="phone">
         <div class="phone-screen">
-          <div class="phone-placeholder">{ic("image")}<span>Screenshot real do app E&amp;E</span><small>[TODO: a fornecer]<br>Salve como imagens/app-screenshot.png</small></div>
-          <!-- Quando o arquivo existir, ele cobre o placeholder automaticamente. -->
-          <img src="imagens/app-screenshot.png" alt="Tela do aplicativo E&amp;E para emissão de notas fiscais" onerror="this.remove()">
+          <img src="imagens/app-screenshot.png" alt="Tela de login do aplicativo E&amp;E Contabilidade">
         </div>
       </div>
     </div>
@@ -444,39 +470,38 @@ def gerar_home():
     </div>
     <div class="sobre-grid">
       <div class="sobre-foto reveal">
-        <!-- Imagem temporária (gerada por IA). Trocar pela foto real: imagens/web/equipe.jpg -->
-        <img src="imagens/web/equipe.jpg" alt="Equipe da E&amp;E Contabilidade no escritório (imagem temporária)" loading="lazy" width="1536" height="1024">
-        <span class="tag-temp">Imagem temporária</span>
+        <img src="imagens/web/sobre-equipe.jpg" alt="Sócias e equipe da E&amp;E Contabilidade, de camisa branca com a logo bordada" loading="lazy" width="1600" height="1066">
       </div>
       <div class="sobre-txt reveal">
         <h3>E&amp;E Contabilidade</h3>
         <p>Com atuação voltada ao produtor rural e ao agronegócio, a E&amp;E une conhecimento contábil, acompanhamento tributário e tecnologia para tornar a gestão mais simples e segura.</p>
         <p>De Bom Repouso para toda a região, buscamos estar próximos de quem produz, entendendo a realidade de cada propriedade e oferecendo orientação para cada etapa do negócio rural.</p>
-        <div class="pilares">{pil}</div>
-        <div class="mv">
+        <div class="mv mv-um">
           <div><h4>Nossa missão</h4><p>Apoiar produtores e empresas do agronegócio com orientação contábil e tributária próxima, clara e responsável.</p></div>
-          <div><h4>Nossa visão</h4><p><span class="todo">[TODO: validar texto institucional com a E&amp;E]</span></p></div>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- CONTEÚDOS -->
-<section class="section conteudos" id="conteudos">
+<!-- EQUIPE -->
+<section class="section equipe" id="equipe">
   <div class="container">
-    <div class="conteudos-head reveal">
-      <span class="eyebrow">CONHECIMENTO PARA O PRODUTOR</span>
-      <h2 class="section-title">Informação que ajuda<br>a cuidar melhor do seu negócio.</h2>
+    <div class="equipe-head reveal">
+      <span class="eyebrow">NOSSA EQUIPE</span>
+      <h2 class="section-title">Conheça quem cuida<br>do seu negócio.</h2>
     </div>
-    <div class="grid-artigos">{art}</div>
+    <div class="galeria reveal">
+      <figure class="g-main"><img src="imagens/web/galeria-equipe-morango.jpg" alt="Equipe da E&amp;E Contabilidade reunida em frente a uma escultura de morango, com as montanhas do Sul de Minas ao fundo" loading="lazy" width="1800" height="1350"></figure>
+      <figure class="g-a"><img src="imagens/web/galeria-escritorio.jpg" alt="Sala de reuniões do escritório da E&amp;E Contabilidade" loading="lazy" width="1400" height="933"></figure>
+      <figure class="g-b"><img src="imagens/web/galeria-socias-morango.jpg" alt="Sócias da E&amp;E Contabilidade sentadas na escultura de morango" loading="lazy" width="900" height="1200"></figure>
+    </div>
   </div>
 </section>
 
 <!-- CONTATO -->
 <section class="section contato" id="contato">
-  <!-- Fundo temporário: a foto da equipe/escritório, desfocada. Trocar por foto real do escritório E&E. -->
-  <img class="contato-bg" src="imagens/web/equipe.jpg" alt="" loading="lazy" width="1536" height="1024">
+  <img class="contato-bg" src="imagens/web/contato-bg.jpg" alt="" loading="lazy" width="1200" height="795">
   <div class="container">
     <div class="reveal">
       <span class="eyebrow" style="color:var(--dourado-claro)">FALE COM A E&amp;E</span>
@@ -505,21 +530,11 @@ def gerar_home():
       <p class="form-status" role="status"></p>
     </form>
   </div>
-</section>
-
-<!-- CTA FINAL -->
-<section class="cta-final">
-  <img src="imagens/web/cta-bg.jpg" alt="" loading="lazy" width="836" height="641">
-  <div class="container reveal">
-    <h2>Você cuida da produção.<br>A E&amp;E ajuda a cuidar do resto.</h2>
-    <p>Contabilidade, tributação e tecnologia para quem movimenta o campo.</p>
-    <a class="btn btn-dourado" data-wa href="#contato">{WA} Falar com uma especialista {ic("arrow")}</a>
-  </div>
 </section>'''
     (RAIZ / "index.html").write_text(pagina(
         "Contabilidade para Produtor Rural em Bom Repouso - MG | E&E Contabilidade",
         "Contabilidade rural e para o agronegócio em Bom Repouso - MG e Sul de Minas. Assessoria ao produtor rural, nota fiscal, imposto de renda, holding rural e Reforma Tributária.",
-        body, "", ld), encoding="utf-8")
+        body, "", ld, home=True), encoding="utf-8")
 
 
 LEGAL_PRIV = [
@@ -541,6 +556,7 @@ LEGAL_TERMOS = [
 
 if __name__ == "__main__":
     gerar_home()
+    gerar_hub()
     for a in ARTIGOS:
         gerar_artigo(a)
     gerar_legal("privacidade.html", "Política de Privacidade", "Como a E&E Contabilidade trata os dados pessoais coletados neste site, conforme a LGPD.", LEGAL_PRIV)
