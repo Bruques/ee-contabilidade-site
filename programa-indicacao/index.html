@@ -1,0 +1,217 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Indique e Ganhe | E&E Contabilidade</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baskervville:wght@400;500&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --verde:#123b2a; --verde-p:#092a20; --verde-s:#315b47; --ouro:#b8964d; --ouro-c:#d2b66d;
+  --off:#f7f4ed; --quente:#eae6dd; --graf:#222823; --branco:#fff; --erro:#9b3b2e;
+  --serif:"Baskervville",Georgia,serif; --sans:"Manrope",system-ui,sans-serif;
+  --sombra:0 10px 30px -14px rgba(9,42,32,.3);
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:var(--sans);background:var(--off);color:var(--graf);font-size:15px;line-height:1.5}
+h1,h2,h3{font-family:var(--serif);font-weight:400;margin:0;color:var(--verde-p)}
+button,input,select{font:inherit}
+header{background:var(--branco);border-bottom:1px solid var(--quente);position:sticky;top:0;z-index:5}
+.topo{max-width:1100px;margin:0 auto;padding:10px 20px;display:flex;align-items:center;gap:20px;flex-wrap:wrap}
+.topo img{height:52px;width:auto;display:block}
+.topo .tit{font-family:var(--serif);font-size:1.25rem;color:var(--verde-p);padding-left:20px;border-left:1px solid var(--quente)}
+nav{margin-left:auto;display:flex;gap:4px}
+nav button{background:none;border:0;padding:9px 16px;border-radius:999px;cursor:pointer;color:var(--verde-s);font-weight:600}
+nav button.on{background:var(--verde);color:var(--ouro-c)}
+nav button:not(.on):hover{background:var(--quente)}
+nav .n{display:inline-block;background:var(--ouro);color:var(--verde-p);border-radius:999px;font-size:.72rem;padding:0 7px;margin-left:6px}
+main{max-width:1100px;margin:0 auto;padding:28px 20px 60px}
+.aviso{background:var(--verde);color:var(--off);border-radius:10px;padding:10px 16px;font-size:.88rem;margin-bottom:22px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:center}
+.aviso b{color:var(--ouro-c)}
+.aviso button{background:none;border:1px solid rgba(210,182,109,.5);color:var(--ouro-c);border-radius:999px;padding:4px 14px;cursor:pointer;font-size:.82rem}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:22px}
+.kpi{background:var(--branco);border-radius:10px;padding:18px 20px;box-shadow:var(--sombra)}
+.kpi small{color:var(--verde-s);font-weight:600;font-size:.76rem;letter-spacing:.04em;text-transform:uppercase}
+.kpi strong{display:block;font-family:var(--serif);font-weight:400;font-size:1.9rem;color:var(--verde-p);margin-top:4px}
+.kpi span{font-size:.82rem;color:#6b756d}
+.kpi.dest{background:var(--verde)} .kpi.dest small,.kpi.dest span{color:var(--ouro-c)} .kpi.dest strong{color:var(--off)}
+.card{background:var(--branco);border-radius:10px;padding:22px;box-shadow:var(--sombra);margin-bottom:18px}
+.card h2{font-size:1.4rem;margin-bottom:4px}
+.card .sub{color:#6b756d;font-size:.86rem;margin:0 0 16px}
+table{width:100%;border-collapse:collapse}
+th{text-align:left;font-size:.74rem;text-transform:uppercase;letter-spacing:.05em;color:var(--verde-s);padding:8px 10px;border-bottom:1px solid var(--quente)}
+td{padding:11px 10px;border-bottom:1px solid var(--off);vertical-align:middle}
+td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
+tr:last-child td{border-bottom:0}
+.tag{display:inline-block;padding:2px 10px;border-radius:999px;font-size:.76rem;font-weight:600;white-space:nowrap}
+.t-contato{background:#ece8dc;color:#6b6450} .t-fechou{background:#f3ead0;color:#7a5f20} .t-pagou{background:#e1ece4;color:var(--verde)} .t-final{background:var(--verde);color:var(--ouro-c)}
+.vazio{color:#6b756d;padding:18px 0;text-align:center}
+form{display:grid;grid-template-columns:1.5fr 1.2fr 1.5fr 1fr auto;gap:10px;align-items:end}
+label{display:block;font-size:.76rem;font-weight:600;color:var(--verde-s);margin-bottom:4px}
+input,select{width:100%;padding:10px 12px;border:1px solid #d6d1c4;border-radius:8px;background:var(--off);color:var(--graf)}
+input:focus,select:focus{outline:2px solid var(--ouro);border-color:transparent}
+.btn{background:var(--verde);color:var(--ouro-c);border:0;border-radius:999px;padding:11px 22px;font-weight:700;cursor:pointer;white-space:nowrap}
+.btn:hover{background:var(--verde-p)}
+.mini{background:none;border:1px solid #d6d1c4;border-radius:999px;padding:5px 13px;font-size:.8rem;cursor:pointer;color:var(--verde-s);white-space:nowrap}
+.mini:hover{background:var(--quente)}
+.mini.prim{background:var(--verde);border-color:var(--verde);color:var(--ouro-c);font-weight:600}
+.mini.prim:hover{background:var(--verde-p)}
+.dev{display:grid;grid-template-columns:1fr auto;gap:14px;align-items:center;padding:16px 0;border-bottom:1px solid var(--off)}
+.dev:last-child{border-bottom:0}
+.dev .valor{font-family:var(--serif);font-size:1.5rem;color:var(--verde-p)}
+.dev small{color:#6b756d;display:block}
+.dev .acoes{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+.prog{height:8px;background:var(--quente);border-radius:999px;overflow:hidden;min-width:120px}
+.prog i{display:block;height:100%;background:var(--ouro)}
+.prog.cheio i{background:var(--verde-s)}
+.regras{display:flex;gap:16px;flex-wrap:wrap;align-items:end}
+.regras div{width:170px}
+.passos{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:6px;font-size:.84rem;color:var(--verde-s)}
+.passos span{background:var(--quente);border-radius:999px;padding:3px 12px}
+#toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%);background:var(--verde);color:var(--ouro-c);padding:10px 20px;border-radius:999px;font-size:.88rem;opacity:0;pointer-events:none;transition:.25s}
+#toast.on{opacity:1}
+@media(max-width:860px){
+  .kpis{grid-template-columns:1fr 1fr}
+  form{grid-template-columns:1fr 1fr}.topo .tit{display:none}nav{margin-left:0;width:100%}
+  .card{overflow-x:auto}.dev{grid-template-columns:1fr}.dev .acoes{justify-content:flex-start}
+}
+</style>
+</head>
+<body>
+<header><div class="topo">
+  <img src="../imagens/web/logo.png" alt="E&E Contabilidade">
+  <div class="tit">Indique e Ganhe</div>
+  <nav id="nav">
+    <button data-v="pagar" class="on">A pagar</button>
+    <button data-v="indicacoes">Indicações</button>
+    <button data-v="indicadores">Indicadores</button>
+  </nav>
+</div></header>
+<main>
+  <div class="aviso"><span><b>Versão de demonstração.</b> Os dados ficam salvos só neste navegador, em nenhum servidor.</span><button id="reset">Limpar dados</button></div>
+  <div id="kpis"></div>
+  <section id="v-pagar"></section>
+  <section id="v-indicacoes" hidden></section>
+  <section id="v-indicadores" hidden></section>
+</main>
+<div id="toast"></div>
+<script>
+const KEY="ee-indique-ganhe-demo-v1";
+const brl=v=>v.toLocaleString("pt-BR",{style:"currency",currency:"BRL"});
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const hoje=()=>new Date().toISOString().slice(0,10);
+const dm=d=>d?d.split("-").reverse().slice(0,2).join("/"):"";
+const ETAPAS={contato:"Em contato",fechou:"Contrato fechado",pagou:"1º honorário pago",final:"Recompensa paga"};
+
+function exemplo(){
+  return {meta:10,pct:5,seq:0,indicadores:[],indicacoes:[]};
+}
+let S; try{S=JSON.parse(localStorage.getItem(KEY))}catch(e){}
+if(!S||!S.indicadores) S=exemplo();
+const salvar=()=>{try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}};
+const pessoa=id=>S.indicadores.find(p=>p.id===id)||{nome:"?",pix:""};
+const confirmadas=id=>S.indicacoes.filter(i=>i.ind===id&&(i.etapa==="pagou"||i.etapa==="final"));
+function toast(t){const e=document.getElementById("toast");e.textContent=t;e.classList.add("on");setTimeout(()=>e.classList.remove("on"),2200)}
+
+function kpis(){
+  const dev=S.indicacoes.filter(i=>i.etapa==="pagou"), pago=S.indicacoes.filter(i=>i.etapa==="final");
+  const mes=hoje().slice(0,7), novas=S.indicacoes.filter(i=>i.data.slice(0,7)===mes).length;
+  const fech=S.indicacoes.filter(i=>i.etapa!=="contato").length;
+  document.getElementById("kpis").innerHTML=`<div class="kpis">
+    <div class="kpi"><small>Indicações no mês</small><strong>${novas}</strong><span>${S.indicacoes.length} no total</span></div>
+    <div class="kpi"><small>Clientes fechados</small><strong>${fech}</strong><span>${S.indicacoes.length?Math.round(fech/S.indicacoes.length*100):0}% das indicações</span></div>
+    <div class="kpi dest"><small>Recompensas a pagar</small><strong>${brl(dev.reduce((s,i)=>s+i.hon,0))}</strong><span>${dev.length} pessoa(s) esperando</span></div>
+    <div class="kpi"><small>Já pago em recompensas</small><strong>${brl(pago.reduce((s,i)=>s+i.hon,0))}</strong><span>${pago.length} recompensa(s)</span></div></div>`;
+}
+
+function pagar(){
+  const dev=S.indicacoes.filter(i=>i.etapa==="pagou");
+  document.querySelector("[data-v=pagar]").innerHTML=`A pagar${dev.length?`<span class="n">${dev.length}</span>`:""}`;
+  document.getElementById("v-pagar").innerHTML=`<div class="card"><h2>Recompensas a pagar</h2>
+    <p class="sub">O indicado pagou o primeiro honorário. A recompensa é esse valor inteiro, enviado por Pix a quem indicou.</p>
+    ${dev.length?dev.map(i=>{const p=pessoa(i.ind);return`<div class="dev"><div><b>${esc(p.nome)}</b> <span style="color:#6b756d">indicou ${esc(i.nome)}</span>
+      <small>Pix: ${esc(p.pix||"não informado")} · 1º honorário pago em ${dm(i.data)}</small></div>
+      <div class="acoes"><span class="valor">${brl(i.hon)}</span>
+      <button class="mini" data-copiar="${i.id}">Copiar mensagem</button>
+      <button class="mini prim" data-avancar="${i.id}">Marcar como pago</button></div></div>`}).join(""):`<div class="vazio">Nenhuma recompensa pendente. 🎉</div>`}
+  </div>`;
+  document.querySelectorAll("[data-copiar]").forEach(b=>b.onclick=()=>{
+    const i=S.indicacoes.find(x=>x.id==b.dataset.copiar),p=pessoa(i.ind);
+    const msg=`Olá, ${p.nome.split(" (")[0]}! O cliente que você indicou (${i.nome}) fechou conosco e já pagou o primeiro honorário. Sua recompensa de ${brl(i.hon)} foi enviada por Pix. Obrigada pela indicação! — E&E Contabilidade`;
+    (navigator.clipboard?navigator.clipboard.writeText(msg):Promise.reject()).then(()=>toast("Mensagem copiada")).catch(()=>toast("Não foi possível copiar"));
+  });
+}
+
+function indicacoes(){
+  const nomes=S.indicadores.map(p=>p.nome);
+  const lista=[...S.indicacoes].sort((a,b)=>b.data.localeCompare(a.data)||b.id-a.id);
+  const prox={contato:"Contrato fechado",fechou:"Pagou 1º honorário"};
+  document.getElementById("v-indicacoes").innerHTML=`
+  <div class="card"><h2>Nova indicação</h2><p class="sub">Qualquer pessoa pode indicar, cliente ou não. Se for a primeira vez, informe o Pix para o repasse.</p>
+    <form id="f">
+      <div><label>Quem indicou</label><input name="ind" list="dl" required maxlength="80" placeholder="Nome"><datalist id="dl">${nomes.map(n=>`<option value="${esc(n)}">`).join("")}</datalist></div>
+      <div><label>Pix de quem indicou</label><input name="pix" maxlength="80" placeholder="Só se for novo"></div>
+      <div><label>Cliente indicado</label><input name="nome" required maxlength="80" placeholder="Ex.: Sítio Esperança"></div>
+      <div><label>Honorário mensal (R$)</label><input name="hon" type="number" min="0" step="0.01" required placeholder="400"></div>
+      <button class="btn">Registrar</button>
+    </form></div>
+  <div class="card"><h2>Indicações</h2>
+    <div class="passos"><span>1. Em contato</span><span>2. Contrato fechado</span><span>3. Pagou 1º honorário</span><span>4. Recompensa paga</span></div>
+    <p class="sub">Avance a etapa conforme o cliente evolui. No passo 3 a recompensa vai para a fila de pagamento.</p>
+    ${lista.length?`<table><tr><th>Indicado</th><th>Indicado por</th><th class="num">Honorário</th><th>Etapa</th><th></th></tr>
+    ${lista.map(i=>`<tr><td>${esc(i.nome)} <span style="color:#9aa39c;font-size:.8rem">${dm(i.data)}</span></td><td>${esc(pessoa(i.ind).nome)}</td><td class="num">${brl(i.hon)}</td>
+      <td><span class="tag t-${i.etapa}">${ETAPAS[i.etapa]}</span></td>
+      <td class="num">${prox[i.etapa]?`<button class="mini" data-avancar="${i.id}">→ ${prox[i.etapa]}</button>`:""}</td></tr>`).join("")}
+    </table>`:`<div class="vazio">Nenhuma indicação registrada ainda. Use o formulário acima.</div>`}</div>`;
+  document.getElementById("f").onsubmit=e=>{
+    e.preventDefault();const f=new FormData(e.target),nome=f.get("ind").trim();
+    let p=S.indicadores.find(x=>x.nome.toLowerCase()===nome.toLowerCase());
+    if(!p){p={id:++S.seq,nome,pix:f.get("pix").trim()};S.indicadores.push(p)}else if(!p.pix&&f.get("pix").trim())p.pix=f.get("pix").trim();
+    S.indicacoes.push({id:++S.seq,ind:p.id,nome:f.get("nome").trim(),hon:parseFloat(f.get("hon"))||0,etapa:"contato",data:hoje()});
+    salvar();render();toast("Indicação registrada");
+  };
+}
+
+function indicadores(){
+  const rows=S.indicadores.map(p=>{
+    const c=confirmadas(p.id), total=S.indicacoes.filter(i=>i.ind===p.id).length;
+    const rec=S.indicacoes.filter(i=>i.ind===p.id&&i.etapa==="final").reduce((s,i)=>s+i.hon,0);
+    const fid=c.length>=S.meta, bonus=fid?c.reduce((s,i)=>s+i.hon,0)*S.pct/100:0;
+    return {p,total,n:c.length,rec,fid,bonus};
+  }).sort((a,b)=>b.n-a.n||b.total-a.total);
+  document.getElementById("v-indicadores").innerHTML=`
+  <div class="card"><h2>Fidelidade</h2><p class="sub">Quem chega à meta de clientes indicados passa a receber um percentual mensal sobre o honorário deles. Valores a combinar com a contabilidade.</p>
+    <div class="regras">
+      <div><label>Meta de clientes</label><input id="meta" type="number" min="1" value="${S.meta}"></div>
+      <div><label>Percentual mensal (%)</label><input id="pct" type="number" min="0" max="100" step="0.5" value="${S.pct}"></div>
+    </div></div>
+  <div class="card"><h2>Indicadores</h2><p class="sub">${S.indicadores.length} pessoas no programa.</p>
+    ${rows.length?`<table><tr><th>Pessoa</th><th>Pix</th><th class="num">Indicações</th><th>Progresso até a fidelidade</th><th class="num">Recebido</th><th class="num">Fidelidade/mês</th></tr>
+    ${rows.map(r=>`<tr><td><b>${esc(r.p.nome)}</b></td><td style="color:#6b756d">${esc(r.p.pix||"—")}</td><td class="num">${r.total}</td>
+      <td><div class="prog ${r.fid?"cheio":""}"><i style="width:${Math.min(100,r.n/S.meta*100)}%"></i></div><small style="color:#6b756d">${r.n} de ${S.meta} clientes${r.fid?" · fidelizado":""}</small></td>
+      <td class="num">${brl(r.rec)}</td><td class="num">${r.fid?brl(r.bonus):"—"}</td></tr>`).join("")}
+    </table>`:`<div class="vazio">Ninguém no programa ainda. Registre a primeira indicação.</div>`}</div>`;
+  document.getElementById("meta").onchange=e=>{S.meta=Math.max(1,parseInt(e.target.value)||10);salvar();render()};
+  document.getElementById("pct").onchange=e=>{S.pct=Math.max(0,Math.min(100,parseFloat(e.target.value)||0));salvar();render()};
+}
+
+let view="pagar";
+function render(){
+  kpis();pagar();indicacoes();indicadores();
+  ["pagar","indicacoes","indicadores"].forEach(v=>document.getElementById("v-"+v).hidden=v!==view);
+  document.querySelectorAll("nav button").forEach(b=>b.classList.toggle("on",b.dataset.v===view));
+  document.querySelectorAll("[data-avancar]").forEach(b=>b.onclick=()=>{
+    const i=S.indicacoes.find(x=>x.id==b.dataset.avancar),o=["contato","fechou","pagou","final"];
+    i.etapa=o[o.indexOf(i.etapa)+1]||i.etapa;if(i.etapa==="pagou")i.data=hoje();
+    salvar();render();toast(i.etapa==="pagou"?"Recompensa na fila de pagamento":"Atualizado");
+  });
+}
+document.getElementById("nav").onclick=e=>{const v=e.target.closest("button")?.dataset.v;if(v){view=v;render();window.scrollTo(0,0)}};
+document.getElementById("reset").onclick=()=>{if(confirm("Apagar todos os dados deste navegador?")){S=exemplo();salvar();render()}};
+render();
+</script>
+</body>
+</html>
